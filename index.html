@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Load Posenet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+ </head>
+
+  <body>
+    <img id='pessoas' src='/data/foto_05.jpg '/>
+  </body>
+  <!-- Place your code in the script tag below. You can also use an external .js file -->
+  <script>
+    var imageElement = document.getElementById('pessoas');
+
+    posenet.load({
+      architecture: 'ResNet50',
+      outputStride: 32,
+      quantBytes: 2
+    }).then(function(net){
+      return net.estimateMultiplePoses(imageElement, {
+        flipHorizontal: false,
+        maxDetections: 10,
+        scoreThreshold: 0.6,
+        nmsRadius: 20})
+    }).then(function(poses){
+      console.log(poses);
+    })
+  </script>
+</html>
